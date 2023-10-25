@@ -2,25 +2,26 @@ import fs from 'fs/promises';
 
 export default class ProductManager {
     // Constructor que recibe la ruta del archivo de la base de datos
-    constructor(path) {
-        this.path = path;
+    constructor( ) {
+        this.path = "./src/files/products.json"
+        this.products = []
     }
 
     // Método para validar un producto antes de agregarlo
     async validate(product) {
-        const productFields = Object.values(product);   
-        const checkFields = productFields.some((field) => field === undefined);
-
-        if (checkFields) {
-            throw new Error("ERROR: Todos los campos deben estar llenos");
+        const requiredFields = ["title", "price", "code", "stock"]; // Campos obligatorios
+        const missingFields = requiredFields.filter((field) => !product[field]);
+    
+        if (missingFields.length > 0) {
+            throw new Error("ERROR: Los siguientes campos obligatorios faltan o están vacíos: " + missingFields.join(", "));
         }
-
+    
         try {
             // Verifica si el archivo de la base de datos existe
             if (await this.pathExists()) {
                 const db = await this.readDB();
                 const checkCode = db.some((p) => p.code === product.code);
-
+    
                 if (checkCode) {
                     throw new Error("ERROR: El código del producto ya está en uso");
                 }

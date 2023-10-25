@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware para servir archivos estáticos desde la carpeta './src/public'
 app.use(express.static('./src/public'));
 
+
 // Configurar rutas para los recursos 'products' y 'carts' usando los enrutadores importados
 app.use('/api/products', routerProducts); // Las solicitudes a '/api/products' se gestionan mediante el enrutador de productos
 app.use('/api/carts', routerCarts); // Las solicitudes a '/api/carts' se gestionan mediante el enrutador de carritos
